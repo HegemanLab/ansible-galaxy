@@ -30,3 +30,20 @@
     backup: yes
   notify:
     - restart galaxy
+
+- name: Create Galaxy tool sheds configuration file
+  template:
+    src: "{{ tool_sheds_config_file_template }}"
+    dest: "{{ tool_sheds_config_file }}"
+    mode: 0644
+    backup: yes
+  notify:
+    - restart galaxy
+  when: galaxy_tool_sheds_config
+
+- name: Set path to tool sheds configuration file
+  lineinfile:
+    path: "{{ galaxy_config_file }}"
+    regexp: "^    tool_sheds_config_file: "
+    line: "    tool_sheds_config_file: {{ tool_sheds_config_file }}"
+  when: galaxy_tool_sheds_config

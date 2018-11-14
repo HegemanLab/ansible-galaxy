@@ -40,11 +40,18 @@ galaxy_shed_tool_conf_file: "{{ galaxy_mutable_config_dir }}/shed_tool_conf.xml"
 galaxy_requirements_file: "{{ galaxy_server_dir }}/lib/galaxy/dependencies/pinned-requirements.txt"
 
 # Galaxy config file can either be 'ini-paste' (old style) or 'yaml'
-galaxy_config_style: "ini-paste"
+galaxy_config_style: "yaml"
 galaxy_config_file_basename: "galaxy.{{ 'yml' if galaxy_config_style in ('yaml', 'yml') else 'ini' }}"
 galaxy_config_file_template: "{{ galaxy_config_file_basename }}.j2"
 galaxy_config_file: "{{ galaxy_config_dir }}/{{ galaxy_config_file_basename }}"
 galaxy_app_config_section: "{{ 'galaxy' if galaxy_config_style in ('yaml', 'yml') else 'app:main' }}"
+
+# Galaxy tool sheds config file
+galaxy_tool_sheds_config: yes
+tool_sheds_config_file: "{{ galaxy_app_config_default.tool_sheds_config_file }}"
+tool_sheds_config_main: yes
+tool_sheds_config_test: yes
+tool_sheds_config_file_template: "tool_sheds_conf.xml.j2"
 
 # The default Galaxy configuration, ensures that Galaxy can find all of the
 # configs if galaxy_config_dir != galaxy_server_dir
@@ -96,7 +103,6 @@ galaxy_config_error_email_to: "{{ galaxy_config_merged[galaxy_app_config_section
 galaxy_config_instance_resource_url: "{{ galaxy_config_merged[galaxy_app_config_section].instance_resource_url | default('') }}"
 galaxy_errordocs_server_name: Galaxy
 galaxy_errordocs_prefix: /error
-
 
 # These are lists of hashes in the same format as galaxy_mutable_configs that
 # can be used to cause extra files and templates to be installed on the managed
